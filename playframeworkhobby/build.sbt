@@ -21,7 +21,7 @@ lazy val root = (project in file("."))
       "-Xfatal-warnings"
     ))
 
-
+routesGenerator := InjectedRoutesGenerator
 
 
 
