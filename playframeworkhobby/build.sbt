@@ -12,8 +12,9 @@ lazy val root = (project in file("."))
       "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test,
       "com.typesafe.play" %% "play" % "2.8.2",
       "org.reactivemongo" %% "reactivemongo" % "1.0.0",
-      "com.adrianhurt" %% "play-bootstrap" % "1.6.1-P28-B4"
+
     ),
+
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
