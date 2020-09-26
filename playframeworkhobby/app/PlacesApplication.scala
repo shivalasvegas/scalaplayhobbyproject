@@ -27,6 +27,7 @@ object PlacesApplication extends App {
   }
   def collection: Future[BSONCollection] = db1.map(_.collection("place"))
 
+  // Get this value from webpage
   val place = new Place( 4, "Lulworth Cove", "Jewel of the Dorset coast.")
 
   implicit def placesWriter: BSONDocumentWriter[Place] = Macros.writer[Place]
