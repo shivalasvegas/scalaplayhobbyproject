@@ -8,7 +8,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
 
-object PlacesApplication extends App {
+object PlacesApplication extends App{
 
   val mongoUri = "mongodb://localhost:27017"
 
@@ -28,7 +28,7 @@ object PlacesApplication extends App {
   def collection: Future[BSONCollection] = db1.map(_.collection("place"))
 
   // Get this value from webpage
-  val place = new Place( 4, "Lulworth Cove", "Jewel of the Dorset coast.")
+  val place = new Place( 5, "Lostwithiel", "Secretive Cornish town.")
 
   implicit def placesWriter: BSONDocumentWriter[Place] = Macros.writer[Place]
 
