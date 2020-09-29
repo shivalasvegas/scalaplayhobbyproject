@@ -1,10 +1,9 @@
 package controllers
 
+import javax.inject.Singleton
 import javax.inject._
-import models.PlaceData
-import play.api._
 import play.api.mvc._
-
+import play.api.mvc.Action
 
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {

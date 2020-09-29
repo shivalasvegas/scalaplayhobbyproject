@@ -14,12 +14,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class PlaceDAO {
 
-  //def getCollection(collection: BSONCollection): Unit = println("Got collection")
-  def create(placeData: PlaceData): Unit = {
-    val place = Place(PlaceDAO.generateID, placeData.name, placeData.description)
-    collection.flatMap(_.insert.one(place).map(_ => {}))
-  }
-
 }
 
 object PlaceDAO {

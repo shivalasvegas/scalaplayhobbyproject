@@ -1,16 +1,15 @@
+package application
 
-import models.{Place, PlaceData}
-import daos.PlaceDAO
-import reactivemongo.api.bson.{BSONDocument, BSONDocumentWriter, Macros}
-import reactivemongo.api.{AsyncDriver, Cursor, DB, MongoConnection, ReadPreference}
+import models.{Place, Post}
 import reactivemongo.api.bson.collection.BSONCollection
+import reactivemongo.api.bson.{BSONDocument, BSONDocumentReader, BSONDocumentWriter, Macros}
 import reactivemongo.api.commands.WriteResult
+import reactivemongo.api._
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
-
-object PlacesApplication extends App{
+object PlacesApplication extends App {
 
   val mongoUri = "mongodb://localhost:27017"
 
@@ -31,19 +30,28 @@ object PlacesApplication extends App{
 
   def collection: Future[BSONCollection] = db1.map(_.collection("place"))
 
+  def collectionPosts: Future[BSONCollection] = db1.map(_.collection("posts"))
+
+  implicit def placesWriter: BSONDocumentWriter[Place] = Macros.writer[Place]
+
+  implicit def postsWriter: BSONDocumentWriter[Post] = Macros.writer[Post]
+
+  implicit def postsReader: BSONDocumentReader[Post] = Macros.reader[Post]
+
+  val post = new Post(1, "A Post", "Posts ahoy")
+
   def list(limit: Int = 100): Future[Seq[Post]] = {
-    collection.flatMap(
-      _.find(BSONDocument)
+    collectionPosts.flatMap(
+      _.find(BSONDocument("title" -> post.title, "description" -> post.description))
         .cursor[Post](ReadPreference.primary)
         .collect[Seq](limit, Cursor.FailOnError[Seq[Post]]()))
   }
 
   // Get this value from webpage
-  val place = new Place( 7, "Clovelly", "A wish away from the past.")
-
-  implicit def placesWriter: BSONDocumentWriter[Place] = Macros.writer[Place]
+  val place = new Place(8, "Hartland", "The source of the Torridge")
 
   println("Waiting ...")
+
   def createWithCollection(collection: BSONCollection): Future[Unit] = Future {
     println("Database connection established")
 
@@ -63,7 +71,7 @@ object PlacesApplication extends App{
     case Failure(failureMessage) => println(failureMessage)
   }
 
-//  def createWithPlace(placeFromPage: Place): Future[Unit] =  Future {
-//
-//  }
+  //  def createWithPlace(placeFromPage: Place): Future[Unit] =  Future {
+  //
+  //  }
 }

@@ -1,24 +1,25 @@
 package controllers
 
-import daos.PlaceDAO
+import javax.inject.Singleton
 import javax.inject.Inject
-import models.{Place, PlaceData}
-import play.api.libs.Files
-import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
-import reactivemongo.api.bson.collection.BSONCollection
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{AbstractController, Action, AnyContent, BaseController, ControllerComponents, Request}
+import application.PlacesApplication
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-class ApplicationController @Inject()(val controllerComponents: ControllerComponents) extends BaseController{
-  val placeDAO = new PlaceDAO
+class ApplicationController @Inject() (cc: ControllerComponents) extends AbstractController(cc){
 
-  def uploadPlace(): Action[AnyContent] = Action.async {implicit request =>
-    val formData: PlaceData = PlaceDAO.createPlaceForm.bindFromRequest.get
-
-    def success(placeData: PlaceData): Unit ={
-      placeDAO.create(placeData).Ok(views.html.formtest2)
+  def listposts()  = Action.async  { implicit request: Request[AnyContent] =>
+    PlacesApplication.list().map {
+      posts => Ok(Json.toJson(posts))
     }
-
-
-
   }
+
+  def titleParam() = Action { _ =>
+    Ok("Now we're cooking on gas!")
+  }
+
+
 }
