@@ -1,6 +1,8 @@
-import models.Place
+
+import models.{Place, PlaceData}
+import daos.PlaceDAO
 import reactivemongo.api.bson.{BSONDocument, BSONDocumentWriter, Macros}
-import reactivemongo.api.{AsyncDriver, DB, MongoConnection}
+import reactivemongo.api.{AsyncDriver, Cursor, DB, MongoConnection, ReadPreference}
 import reactivemongo.api.bson.collection.BSONCollection
 import reactivemongo.api.commands.WriteResult
 
@@ -21,24 +23,30 @@ object PlacesApplication extends App{
   val futureConnection = parsedUri.flatMap(driver.connect(_))
 
   def db1: Future[DB] = futureConnection.flatMap(_.database("placesdb"))
+
   db1 onComplete {
     case Success(successMessage) => println(s"Connected to $successMessage")
     case Failure(failureMessage) => println(failureMessage)
   }
+
   def collection: Future[BSONCollection] = db1.map(_.collection("place"))
 
+  def list(limit: Int = 100): Future[Seq[Post]] = {
+    collection.flatMap(
+      _.find(BSONDocument)
+        .cursor[Post](ReadPreference.primary)
+        .collect[Seq](limit, Cursor.FailOnError[Seq[Post]]()))
+  }
+
   // Get this value from webpage
-  val place = new Place( 5, "Lostwithiel", "Secretive Cornish town.")
+  val place = new Place( 7, "Clovelly", "A wish away from the past.")
 
   implicit def placesWriter: BSONDocumentWriter[Place] = Macros.writer[Place]
 
-//  def create(place: Place): Future[Unit] = collection.flatMap(_.insert.one(place).map(_ => {}))
-//
-//  PlacesApplication.create(place)
-
   println("Waiting ...")
-  def simpleCreate(collection: BSONCollection): Future[Unit] = Future {
+  def createWithCollection(collection: BSONCollection): Future[Unit] = Future {
     println("Database connection established")
+
     val writeRes: Future[WriteResult] = collection.insert.one(place)
 
     writeRes.onComplete {
@@ -49,9 +57,13 @@ object PlacesApplication extends App{
 
     writeRes.map(_ => {})
   }
+
   collection onComplete {
-    case Success(collection: BSONCollection) => PlacesApplication.simpleCreate(collection)
+    case Success(collection: BSONCollection) => PlacesApplication.createWithCollection(collection)
     case Failure(failureMessage) => println(failureMessage)
   }
 
+//  def createWithPlace(placeFromPage: Place): Future[Unit] =  Future {
+//
+//  }
 }
