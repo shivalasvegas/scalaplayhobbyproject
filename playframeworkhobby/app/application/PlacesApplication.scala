@@ -1,11 +1,14 @@
 package application
 
-import models.{Place, Post}
+import daos.PlaceDAO
+import models.{Place, Post, PostData}
 import reactivemongo.api.bson.collection.BSONCollection
 import reactivemongo.api.bson.{BSONDocument, BSONDocumentReader, BSONDocumentWriter, Macros}
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.api._
 import reactivemongo.play.json.compat
+import play.api.data._
+import play.api.data.Forms._
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
@@ -38,9 +41,9 @@ object PlacesApplication extends App {
   implicit def postsWriter: BSONDocumentWriter[Post] = Macros.writer[Post]
 
   implicit def postsReader: BSONDocumentReader[Post] = Macros.reader[Post]
-
+  
   // Get this value from webpage
-  val place = new Place(8, "Hartland", "The source of the Torridge")
+  val place = new Place(PlaceDAO.generateID, "West Lulworth", "Gateway to the fossil Forest")
 
   println("Waiting ...")
 
@@ -63,7 +66,7 @@ object PlacesApplication extends App {
     case Failure(failureMessage) => println(failureMessage)
   }
 
-  def createWithPost(post: Post): Future[Unit] =  Future {
+  def createWithForm(post: Post): Future[Unit] =  Future {
     val writeRes = collectionPosts.map(_.insert.one(post))
     writeRes.onComplete {
       case Failure(e) => e.printStackTrace()

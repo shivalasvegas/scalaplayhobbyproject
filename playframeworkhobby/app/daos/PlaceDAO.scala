@@ -18,7 +18,7 @@ class PlaceDAO {
 
 object PlaceDAO {
 
-  private var placeID: Int = 0
+  private var placeID: Int = 8
   def generateID: Int = {
     placeID += 1
     placeID
