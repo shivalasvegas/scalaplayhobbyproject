@@ -5,6 +5,7 @@ import reactivemongo.api.bson.collection.BSONCollection
 import reactivemongo.api.bson.{BSONDocument, BSONDocumentReader, BSONDocumentWriter, Macros}
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.api._
+import reactivemongo.play.json.compat
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
@@ -38,15 +39,6 @@ object PlacesApplication extends App {
 
   implicit def postsReader: BSONDocumentReader[Post] = Macros.reader[Post]
 
-  val post = new Post(1, "A Post", "Posts ahoy")
-
-  def list(limit: Int = 100): Future[Seq[Post]] = {
-    collectionPosts.flatMap(
-      _.find(BSONDocument("title" -> post.title, "description" -> post.description))
-        .cursor[Post](ReadPreference.primary)
-        .collect[Seq](limit, Cursor.FailOnError[Seq[Post]]()))
-  }
-
   // Get this value from webpage
   val place = new Place(8, "Hartland", "The source of the Torridge")
 
@@ -71,7 +63,13 @@ object PlacesApplication extends App {
     case Failure(failureMessage) => println(failureMessage)
   }
 
-  //  def createWithPlace(placeFromPage: Place): Future[Unit] =  Future {
-  //
-  //  }
+  def createWithPost(post: Post): Future[Unit] =  Future {
+    val writeRes = collectionPosts.map(_.insert.one(post))
+    writeRes.onComplete {
+      case Failure(e) => e.printStackTrace()
+      case Success(writeResult) =>
+        println(s"successfully inserted document from post with result: $writeResult")
+    }
+    writeRes.map(_ => {})
+  }
 }
