@@ -15,10 +15,12 @@ import scala.concurrent.Future
 class ApplicationController @Inject() (cc: ControllerComponents) extends AbstractController(cc)  with play.api.i18n.I18nSupport {
 
   def uploadPlace(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent]=>
-
+    println("Ready to upload ... ")
     val placeData = PlaceDAO.createPlaceForm.bindFromRequest().get
     val newPlace = Place(BSONObjectID.generate().stringify, placeData.name, placeData.description)
+
     PlacesApplication.createPlaceWithForm(newPlace)
+    println("Creating document for database ... ")
     Future(Ok(views.html.formtest2(PlaceDAO.createPlaceForm)))
   }
 

@@ -32,18 +32,16 @@ object PlacesApplication extends App {
   def collection: Future[BSONCollection] = db1.map(_.collection("place"))
   def collectionDoc: Future[BSONCollection] = db1.map(_.collection("placedoc"))
 
-  def collectionPosts: Future[BSONCollection] = db1.map(_.collection("posts"))
-
   implicit def placesWriter: BSONDocumentWriter[Place] = Macros.writer[Place]
   implicit def placesDocWriter: BSONDocumentWriter[PlaceDocument] = Macros.writer[PlaceDocument]
-
+  implicit def placesReader: BSONDocumentReader[Place] = Macros.reader[Place]
   // Get this value from webpage
   val placeDocument = new PlaceDocument(PlaceDocumentDAO.generateID, "West Lulworth", "Gateway to the fossil Forest")
 
   println("Waiting ...")
 
-  def createWithCollection(collection: BSONCollection): Future[Unit] = Future {
-    println("Database connection established")
+  def createWithCollection(collection: BSONCollection, placeDocument: PlaceDocument): Future[Unit] = Future {
+    println(s"Database connection established ... $placeDocument")
 
     val writeRes: Future[WriteResult] = collection.insert.one(placeDocument)
 
@@ -57,12 +55,16 @@ object PlacesApplication extends App {
   }
 
   collectionDoc onComplete {
-    case Success(collectionDoc: BSONCollection) => PlacesApplication.createWithCollection(collectionDoc)
+    case Success(collectionDoc: BSONCollection) =>
+      PlacesApplication.createWithCollection(collectionDoc, placeDocument)
     case Failure(failureMessage) => println(failureMessage)
   }
 
   def createPlaceWithForm(place: Place): Future[Unit] =  Future {
-    val writeRes = collectionPosts.map(_.insert.one(place))
+    println(s"Mapping the data ... $place ")
+    val writeRes = collection.map(_.insert.one(place))
+    val isComplete = writeRes.isCompleted
+    if (isComplete) println("Inserted document") else println("Oh snap!")
     writeRes.onComplete {
       case Failure(e) => e.printStackTrace()
       case Success(writeResult) =>
