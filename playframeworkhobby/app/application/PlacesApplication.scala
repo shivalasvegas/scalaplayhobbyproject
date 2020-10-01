@@ -1,14 +1,11 @@
 package application
 
 import controllers.PlaceDAO
-import models.{Place, PlaceDocument, Post, PostData}
+import models.{Place, PlaceDocument, Post}
 import reactivemongo.api.bson.collection.BSONCollection
-import reactivemongo.api.bson.{BSONDocument, BSONDocumentReader, BSONDocumentWriter, Macros}
+import reactivemongo.api.bson.{BSONDocumentReader, BSONDocumentWriter, Macros}
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.api._
-import reactivemongo.play.json.compat
-import play.api.data._
-import play.api.data.Forms._
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
@@ -34,7 +31,6 @@ object PlacesApplication extends App {
 
   def collection: Future[BSONCollection] = db1.map(_.collection("place"))
   def collectionDoc: Future[BSONCollection] = db1.map(_.collection("placedoc"))
-  def collectionCounters: Future[BSONCollection] = db1.map(_.collection("counters"))
 
   def collectionPosts: Future[BSONCollection] = db1.map(_.collection("posts"))
 
@@ -44,16 +40,7 @@ object PlacesApplication extends App {
   implicit def postsWriter: BSONDocumentWriter[Post] = Macros.writer[Post]
 
   implicit def postsReader: BSONDocumentReader[Post] = Macros.reader[Post]
-  def getNextId(idName: String): Unit = {
-    var mod = collectionCounters.map(counters => counters.findAndModify(
-      {
-        query : {id : idName},
 
-      }
-    )
-
-    )
-  }
   // Get this value from webpage
   val placeDocument = new PlaceDocument(PlaceDAO.generateID, "West Lulworth", "Gateway to the fossil Forest")
 

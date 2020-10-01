@@ -2,8 +2,7 @@ package controllers
 
 import models.PlaceData
 import play.api.data.Form
-import play.api.data.Forms.{ignored, mapping, nonEmptyText, number, optional}
-import reactivemongo.api.bson.BSONObjectID
+import play.api.data.Forms.{mapping, nonEmptyText, optional}
 
 class PlaceDAO {
 
@@ -11,11 +10,6 @@ class PlaceDAO {
 
 object PlaceDAO {
 
-  private var placeID: Int = 9
-  def generateID: Int = {
-    placeID += 1
-    placeID
-  }
 
   val createPlaceForm = Form(
     mapping(

@@ -2,11 +2,9 @@ package controllers
 
 import javax.inject.Singleton
 import javax.inject.Inject
-import play.api.mvc.{AbstractController, Action, AnyContent, BaseController, ControllerComponents, MultipartFormData, Request}
-import play.api.i18n.I18nSupport
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents, Request}
 import application.PlacesApplication
-import daos.PostDAO
-import models.{Place, PlaceData}
+import models.{Place}
 import reactivemongo.api.bson.BSONObjectID
 
 import scala.concurrent.ExecutionContext.Implicits.global
