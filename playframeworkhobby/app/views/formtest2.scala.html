@@ -1,19 +1,24 @@
-@()
-
-@main("Add/edit form"){
-
-<form>
-  <div class="form-group">
-    <label for="exampleFormControlInput1">Email address</label>
-
-    <input type="email" id="exampleFormControlInput1" >
-  </div>
+@(placeForm: Form[PlaceData])(implicit request: MessagesProvider)
 
 
-  <div class="form-group">
-    <label for="exampleFormControlTextarea1">Example textarea</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-  </div>
-</form>
-  }
+@main("Add files") {
+        <div id="place-details">
+          <div id="left-div" >
+            @helper.form(action = routes.ApplicationController.uploadPlace()) {
+            <fieldset>
+              <legend>Add/edit a place</legend>
+
+              @helper.inputText(placeForm("name"))
+              @helper.inputText(placeForm("description"))
+
+            </fieldset>
+
+            <div>
+              <input type="submit" class="btn btn-success" value="Save place">
+            </div>
+          </div>
+        </div>
+}
+
+}
 

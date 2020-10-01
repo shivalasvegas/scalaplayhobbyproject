@@ -5,8 +5,8 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index()
-GET     /formtest2                  controllers.HomeController.formtest2()
-POST    /posts                      controllers.ApplicationController.createPost()
+GET     /formtest2                  controllers.ApplicationController.formtest2()
+POST    /formtest2                  controllers.ApplicationController.uploadPlace()
 
 GET     /title                 controllers.ApplicationController.titleParam()
 
