@@ -1,7 +1,7 @@
 package application
 
-import controllers.PlaceDAO
-import models.{Place, PlaceDocument, Post}
+import daos.{PlaceDAO, PlaceDocumentDAO}
+import models.{Place, PlaceDocument}
 import reactivemongo.api.bson.collection.BSONCollection
 import reactivemongo.api.bson.{BSONDocumentReader, BSONDocumentWriter, Macros}
 import reactivemongo.api.commands.WriteResult
@@ -37,12 +37,8 @@ object PlacesApplication extends App {
   implicit def placesWriter: BSONDocumentWriter[Place] = Macros.writer[Place]
   implicit def placesDocWriter: BSONDocumentWriter[PlaceDocument] = Macros.writer[PlaceDocument]
 
-  implicit def postsWriter: BSONDocumentWriter[Post] = Macros.writer[Post]
-
-  implicit def postsReader: BSONDocumentReader[Post] = Macros.reader[Post]
-
   // Get this value from webpage
-  val placeDocument = new PlaceDocument(PlaceDAO.generateID, "West Lulworth", "Gateway to the fossil Forest")
+  val placeDocument = new PlaceDocument(PlaceDocumentDAO.generateID, "West Lulworth", "Gateway to the fossil Forest")
 
   println("Waiting ...")
 
@@ -60,19 +56,9 @@ object PlacesApplication extends App {
     writeRes.map(_ => {})
   }
 
-  collection onComplete {
-    case Success(collection: BSONCollection) => PlacesApplication.createWithCollection(collection)
+  collectionDoc onComplete {
+    case Success(collectionDoc: BSONCollection) => PlacesApplication.createWithCollection(collectionDoc)
     case Failure(failureMessage) => println(failureMessage)
-  }
-
-  def createPostWithForm(post: Post): Future[Unit] =  Future {
-    val writeRes = collectionPosts.map(_.insert.one(post))
-    writeRes.onComplete {
-      case Failure(e) => e.printStackTrace()
-      case Success(writeResult) =>
-        println(s"successfully inserted document from post with result: $writeResult")
-    }
-    writeRes.map(_ => {})
   }
 
   def createPlaceWithForm(place: Place): Future[Unit] =  Future {

@@ -4,7 +4,8 @@ import javax.inject.Singleton
 import javax.inject.Inject
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents, Request}
 import application.PlacesApplication
-import models.{Place}
+import daos.PlaceDAO
+import models.Place
 import reactivemongo.api.bson.BSONObjectID
 
 import scala.concurrent.ExecutionContext.Implicits.global

@@ -1,6 +1,6 @@
 package daos
 
-import models.PlaceDocumentData
+import models.{PlaceDocumentData}
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText, number, optional}
 
@@ -10,13 +10,13 @@ class PlaceDocumentDAO {
 
 object PlaceDocumentDAO {
 
-  private var placeID: Int = 8
+  private var postID: Int = 1
   def generateID: Int = {
-    placeID += 1
-    placeID
+    postID += 1
+    postID
   }
 
-  val createPlaceDocumentForm = Form(
+  val createPostForm = Form(
     mapping(
       "_id" -> optional(number),
       "name" -> nonEmptyText,

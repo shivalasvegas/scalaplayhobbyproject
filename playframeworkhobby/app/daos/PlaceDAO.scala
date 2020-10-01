@@ -1,4 +1,4 @@
-package controllers
+package daos
 
 import models.PlaceData
 import play.api.data.Form
@@ -10,6 +10,11 @@ class PlaceDAO {
 
 object PlaceDAO {
 
+  private var placeID: Int = 0
+  def generateID: Int = {
+    placeID += 1
+    placeID
+  }
 
   val createPlaceForm = Form(
     mapping(
