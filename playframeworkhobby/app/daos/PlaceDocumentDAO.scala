@@ -10,7 +10,7 @@ class PlaceDocumentDAO {
 
 object PlaceDocumentDAO {
 
-  private var postID: Int = 11
+  private var postID: Int = 20
   def generateID: Int = {
     postID += 1
     postID
