@@ -47,19 +47,20 @@ object PlacesApplication {
           writeRes.map(_ => {})
   }
 
-  def readPlace = {
-
+  def readPlace(collection: BSONCollection, name: String): Future[Option[BSONDocument]] = {
+    val query = BSONDocument("name" -> name)
+    collection.find(query).one[BSONDocument]
   }
 
   def updatePlace(collection: BSONCollection, name: String, description: String) = {
 
-      val result: Future[FindAndModifyResult] = collection.findAndUpdate(
+      val result = collection.findAndUpdate(
         BSONDocument("name" -> name),
         BSONDocument("$set" -> BSONDocument("description" -> description)),
         fetchNewObject = true)
 
       result.map(_.result[Place])
-    }
+
   }
 
   def deletePlace(collection: BSONCollection, name: String): Future[Option[Place]] = {
