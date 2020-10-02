@@ -1,9 +1,9 @@
 package application
 
 import daos.{PlaceDAO, PlaceDocumentDAO}
-import models.{Place, PlaceDocument}
+import models.{Place, PlaceData, PlaceDocument}
 import reactivemongo.api.bson.collection.BSONCollection
-import reactivemongo.api.bson.{BSONDocumentReader, BSONDocumentWriter, Macros}
+import reactivemongo.api.bson.{BSONDocumentReader, BSONDocumentWriter, BSONObjectID, Macros}
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.api._
 
@@ -12,24 +12,24 @@ import scala.util.{Failure, Success}
 
 object PlacesApplication extends App {
 
-  val mongoUri = "mongodb://localhost:27017"
-
   import ExecutionContext.Implicits.global
 
+  val mongoUri = "mongodb://localhost:27017/placesdb"
+
   val driver = new reactivemongo.api.AsyncDriver
-
-  val connection: Future[MongoConnection] = driver.connect(List("localhost"))
-
-  val parsedUri = MongoConnection.fromString(mongoUri)
-
   println("Connecting to database ...")
-  val futureConnection = parsedUri.flatMap(driver.connect(_))
+  val db1 = for {
+    uri <- MongoConnection.fromString(mongoUri)
+    con <- driver.connect(uri)
+    dn <- Future(uri.db.get)
+    db <- con.database(dn)
+  } yield db
 
-  def db1: Future[DB] = futureConnection.flatMap(_.database("placesdb"))
-
-  db1 onComplete {
+  db1.onComplete {
     case Success(successMessage) => println(s"Connected to $successMessage")
     case Failure(failureMessage) => println(failureMessage)
+//    case resolution => println(s"DB resolution ... $resolution")
+//      driver.close()
   }
 
   def collectionPlace: Future[BSONCollection] = db1.map(_.collection("place"))
@@ -38,6 +38,16 @@ object PlacesApplication extends App {
   implicit def placesWriter: BSONDocumentWriter[Place] = Macros.writer[Place]
   implicit def placesDocWriter: BSONDocumentWriter[PlaceDocument] = Macros.writer[PlaceDocument]
   implicit def placesReader: BSONDocumentReader[Place] = Macros.reader[Place]
+
+  def create(placeData: PlaceData): Future[WriteResult] = {
+    val place = Place(BSONObjectID.generate().stringify, placeData.name, placeData.description)
+
+    for {
+      places <- collectionPlace
+      writeResult <- places.insert.one(place)
+    } yield writeResult
+
+  }
   // Get this value from webpage
 //  val placeDocument = new PlaceDocument(22, "West Lulworth", "Gateway to the fossil Forest")
 //
@@ -90,23 +100,23 @@ object PlacesApplication extends App {
 ////
 //    }
 
-  def createPlaceWithForm(place: Place): Future[Unit] =  {
-
-    println(s"Mapping the data ... $place ")
-    val writeRes: Future[WriteResult] = collectionPlace.flatMap(_.insert.one(place))
-    println("Future written ...")
-
-    writeRes.onComplete {
-            case Failure(failureMessage) => println(failureMessage)
-            case Success(writeResult) =>
-              println(s"successfully inserted document from post with result: $writeResult")
-          }
-          writeRes.map(_ => {})
-  }
-  collectionPlace onComplete {
-    case Success(collectionPlace: BSONCollection) => println(s"Collection $collectionPlace ... created")
-    case Failure(failureMessage) => println(failureMessage)
-     }
+//  def createPlaceWithForm(place: Place): Future[Unit] =  {
+//
+//    println(s"Mapping the data ... $place ")
+//    val writeRes: Future[WriteResult] = collectionPlace.flatMap(_.insert.one(place))
+//    println("Future written ...")
+//
+//    writeRes.onComplete {
+//            case Failure(failureMessage) => println(failureMessage)
+//            case Success(writeResult) =>
+//              println(s"successfully inserted document from post with result: $writeResult")
+//          }
+//          writeRes.map(_ => {})
+//  }
+//  collectionPlace onComplete {
+//    case Success(collectionPlace: BSONCollection) => println(s"Collection $collectionPlace ... created")
+//    case Failure(failureMessage) => println(failureMessage)
+//     }
 //  def createPlaceWithForm(place: Place): Future[Unit] =  Future {
 //
 //    println(s"Mapping the data ... $place ")
