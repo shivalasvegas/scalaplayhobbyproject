@@ -1,8 +1,9 @@
 package application
 
-import models.{Place}
+import models.Place
+
 import reactivemongo.api.bson.collection.BSONCollection
-import reactivemongo.api.bson.{BSONDocumentReader, BSONDocumentWriter, Macros}
+import reactivemongo.api.bson.{BSONDocument, BSONDocumentReader, BSONDocumentWriter, Macros}
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.api._
 
@@ -44,6 +45,26 @@ object PlacesApplication {
               println(s"successfully inserted document from post with result: $writeResult")
           }
           writeRes.map(_ => {})
+  }
+
+  def readPlace = {
+
+  }
+
+  def updatePlace(collection: BSONCollection, name: String, description: String) = {
+
+      val result: Future[FindAndModifyResult] = collection.findAndUpdate(
+        BSONDocument("name" -> name),
+        BSONDocument("$set" -> BSONDocument("description" -> description)),
+        fetchNewObject = true)
+
+      result.map(_.result[Place])
+    }
+  }
+
+  def deletePlace(collection: BSONCollection, name: String): Future[Option[Place]] = {
+      collection.findAndRemove(BSONDocument("name" -> name)).map(_.result[Place])
+
   }
 
 }

@@ -25,6 +25,7 @@ class ApplicationController @Inject() (cc: ControllerComponents) extends Abstrac
     Future(Ok(views.html.formtest2(PlaceDAO.createPlaceForm)))
   }
 
+
   def formtest2(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.formtest2(PlaceDAO.createPlaceForm))
   }
