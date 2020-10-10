@@ -6,7 +6,7 @@ import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponent
 import application.PlacesApplication
 import daos.PlaceDAO
 import models.Place
-import reactivemongo.api.bson.{ BSONObjectID }
+import reactivemongo.api.bson.{BSONDocument, BSONObjectID}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -25,6 +25,12 @@ class ApplicationController @Inject() (cc: ControllerComponents) extends Abstrac
     Future(Ok(views.html.formtest2(PlaceDAO.createPlaceForm)))
   }
 
+  def showPlace(id: Int): Action[AnyContent] = Action.async { implicit request =>
+    println(s"Looking for document with id: $id")
+    PlacesApplication.findByID(id).map{
+      case Some(place) => Ok(views.html.formtest2(PlaceDAO.createPlaceForm))
+    }
+  }
 
   def formtest2(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.formtest2(PlaceDAO.createPlaceForm))

@@ -28,7 +28,6 @@ object PlacesApplication {
   db1.onComplete {
     case Success(successMessage) => println(s"Connected to $successMessage")
     case Failure(failureMessage) => println(failureMessage)
-
   }
 
   def collectionPlace: Future[BSONCollection] = db1.map(_.collection("place"))
@@ -47,9 +46,14 @@ object PlacesApplication {
           writeRes.map(_ => {})
   }
 
-  def readPlace(collection: BSONCollection, name: String): Future[Option[BSONDocument]] = {
+  def readPlace(name: String): Future[Option[BSONDocument]] = {
     val query = BSONDocument("name" -> name)
-    collection.find(query).one[BSONDocument]
+    collectionPlace.flatMap(_.find(query).one[BSONDocument])
+  }
+
+  def findByID(id: Int): Future[Option[BSONDocument]] = {
+    val query = BSONDocument("_id" -> id)
+    collectionPlace.flatMap(_.find(query).one[BSONDocument])
   }
 
   def updatePlace(collection: BSONCollection, name: String, description: String) = {
