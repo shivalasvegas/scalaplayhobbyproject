@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
-// @SOURCE:C:/Users/shiva/Documents/AA_PROJECTS/AA_scala/playExamples/play-samples/play-scala-anorm-example/conf/routes
-// @DATE:Sat Oct 10 11:34:41 BST 2020
+// @SOURCE:C:/Users/shiva/Documents/AA_PROJECTS/AA_scala/hobbyScalaProject/playscalaanorm/conf/routes
+// @DATE:Tue Oct 13 15:04:38 BST 2020
 
 package router
 
