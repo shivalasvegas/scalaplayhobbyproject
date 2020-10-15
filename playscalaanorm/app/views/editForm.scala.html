@@ -1,4 +1,4 @@
-@(id: Long, placeForm: Form[Place], companies : Seq[(String, String)])(implicit requestHeader: MessagesRequestHeader)
+@(id: Long, placeForm: Form[Place], placeInfos : Seq[(String, String)])(implicit requestHeader: MessagesRequestHeader)
 
 @import views.html.helper._
 
@@ -15,9 +15,9 @@
             @inputText(placeForm("discontinued"), Symbol("_label") -> "Discontinued date", Symbol("_help") -> "")
             
             @select(
-                placeForm("company"),
-                companies, 
-                Symbol("_label") -> "Company", Symbol("_default") -> "-- Choose a company --",
+                placeForm("placeInfo"),
+                placeInfos, 
+                Symbol("_label") -> "PlaceInfo", Symbol("_default") -> "-- Choose a placeInfo --",
                 Symbol("_showConstraints") -> false
             )
         </fieldset>

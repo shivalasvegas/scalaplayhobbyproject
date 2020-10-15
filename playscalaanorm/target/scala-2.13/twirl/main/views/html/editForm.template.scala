@@ -18,13 +18,13 @@ import play.api.data._
 object editForm extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with _root_.play.twirl.api.Template4[Long,Form[Place],Seq[scala.Tuple2[String, String]],MessagesRequestHeader,play.twirl.api.HtmlFormat.Appendable] {
 
   /**/
-  def apply/*1.2*/(id: Long, placeForm: Form[Place], companies : Seq[(String, String)])(implicit requestHeader: MessagesRequestHeader):play.twirl.api.HtmlFormat.Appendable = {
+  def apply/*1.2*/(id: Long, placeForm: Form[Place], placeInfos : Seq[(String, String)])(implicit requestHeader: MessagesRequestHeader):play.twirl.api.HtmlFormat.Appendable = {
     _display_ {
       {
 /*3.2*/import views.html.helper._
 
 
-Seq[Any](format.raw/*1.118*/("""
+Seq[Any](format.raw/*1.119*/("""
 
 """),format.raw/*4.1*/("""
 """),_display_(/*5.2*/main/*5.6*/ {_display_(Seq[Any](format.raw/*5.8*/("""
@@ -40,9 +40,9 @@ Seq[Any](format.raw/*1.118*/("""
             """),_display_(/*15.14*/inputText(placeForm("discontinued"), Symbol("_label") -> "Discontinued date", Symbol("_help") -> "")),format.raw/*15.114*/("""
             
             """),_display_(/*17.14*/select(
-                placeForm("company"),
-                companies, 
-                Symbol("_label") -> "Company", Symbol("_default") -> "-- Choose a company --",
+                placeForm("placeInfo"),
+                placeInfos, 
+                Symbol("_label") -> "PlaceInfo", Symbol("_default") -> "-- Choose a placeInfo --",
                 Symbol("_showConstraints") -> false
             )),format.raw/*22.14*/("""
         """),format.raw/*23.9*/("""</fieldset>
@@ -66,9 +66,9 @@ Seq[Any](format.raw/*1.118*/("""
     }
   }
 
-  def render(id:Long,placeForm:Form[Place],companies:Seq[scala.Tuple2[String, String]],requestHeader:MessagesRequestHeader): play.twirl.api.HtmlFormat.Appendable = apply(id,placeForm,companies)(requestHeader)
+  def render(id:Long,placeForm:Form[Place],placeInfos:Seq[scala.Tuple2[String, String]],requestHeader:MessagesRequestHeader): play.twirl.api.HtmlFormat.Appendable = apply(id,placeForm,placeInfos)(requestHeader)
 
-  def f:((Long,Form[Place],Seq[scala.Tuple2[String, String]]) => (MessagesRequestHeader) => play.twirl.api.HtmlFormat.Appendable) = (id,placeForm,companies) => (requestHeader) => apply(id,placeForm,companies)(requestHeader)
+  def f:((Long,Form[Place],Seq[scala.Tuple2[String, String]]) => (MessagesRequestHeader) => play.twirl.api.HtmlFormat.Appendable) = (id,placeForm,placeInfos) => (requestHeader) => apply(id,placeForm,placeInfos)(requestHeader)
 
   def ref: this.type = this
 
@@ -77,10 +77,10 @@ Seq[Any](format.raw/*1.118*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2020-10-13T17:15:51.155
+                  DATE: 2020-10-15T12:38:35.376
                   SOURCE: C:/Users/shiva/Documents/AA_PROJECTS/AA_scala/hobbyScalaProject/playscalaanorm/app/views/editForm.scala.html
-                  HASH: 24f41761b0aac17acf3ca66f36a84ac63ff70038
-                  MATRIX: 798->1|987->122|1044->117|1074->150|1102->153|1113->157|1151->159|1189->171|1246->203|1292->241|1331->243|1378->263|1430->288|1443->292|1474->302|1516->317|1622->402|1664->417|1782->513|1824->528|1946->628|2002->657|2262->896|2299->906|2523->1103|2538->1109|2581->1131|2668->1188|2707->1201|2785->1270|2825->1272|2863->1283|2876->1287|2907->1297|2944->1307|3047->1380|3086->1389
+                  HASH: 80b8b9608788c23bec6448a7081050dca81e453b
+                  MATRIX: 798->1|988->123|1045->118|1075->151|1103->154|1114->158|1152->160|1190->172|1247->204|1293->242|1332->244|1379->264|1431->289|1444->293|1475->303|1517->318|1623->403|1665->418|1783->514|1825->529|1947->629|2003->658|2270->904|2307->914|2531->1111|2546->1117|2589->1139|2676->1196|2715->1209|2793->1278|2833->1280|2871->1291|2884->1295|2915->1305|2952->1315|3055->1388|3094->1397
                   LINES: 21->1|24->3|27->1|29->4|30->5|30->5|30->5|32->7|34->9|34->9|34->9|36->11|37->12|37->12|37->12|38->13|38->13|39->14|39->14|40->15|40->15|42->17|47->22|48->23|53->28|53->28|53->28|56->31|58->33|58->33|58->33|59->34|59->34|59->34|60->35|61->36|63->38
                   -- GENERATED --
               */

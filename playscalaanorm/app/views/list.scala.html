@@ -1,4 +1,4 @@
-@(currentPage: Page[(Place, Option[Company])], currentOrderBy: Int, currentFilter: String)(implicit request: MessagesRequestHeader)
+@(currentPage: Page[(Place, Option[PlaceInfo])], currentOrderBy: Int, currentFilter: String)(implicit request: MessagesRequestHeader)
 
 @import helper._
 
@@ -50,13 +50,13 @@
                     @header(2, "Place name")
                     @header(3, "Introduced")
                     @header(4, "Discontinued")
-                    @header(5, "Company")
+                    @header(5, "PlaceInfo")
                 </tr>
             </thead>
             <tbody>
 
                 @places.map {
-                    case (place, company) => {
+                    case (place, placeInfo) => {
                         <tr>
                             <td><a href="@routes.HomeController.edit(place.id.get)">@place.name</a></td>
                             <td>
@@ -66,7 +66,7 @@
                                 @place.discontinued.map(_.format("dd MMM yyyy")).getOrElse { <em>-</em> }
                             </td>
                             <td>
-                                @company.map(_.name).getOrElse { <em>-</em> }
+                                @placeInfo.map(_.name).getOrElse { <em>-</em> }
                             </td>
                         </tr>
                     }

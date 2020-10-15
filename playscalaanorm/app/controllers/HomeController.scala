@@ -13,7 +13,7 @@ import scala.concurrent.{ExecutionContext, Future}
   * Manage a database of computers
   */
 class HomeController @Inject()(placeService: PlacesRepository,
-                               companyService: CompanyRepository,
+                               placeInfoService: PlaceInfoRepository,
                                cc: MessagesControllerComponents)(implicit ec: ExecutionContext)
   extends MessagesAbstractController(cc) {
 
@@ -33,7 +33,7 @@ class HomeController @Inject()(placeService: PlacesRepository,
       "name" -> nonEmptyText,
       "introduced" -> optional(date("yyyy-MM-dd")),
       "discontinued" -> optional(date("yyyy-MM-dd")),
-      "company" -> optional(longNumber)
+      "placeInfo" -> optional(longNumber)
     )(Place.apply)(Place.unapply)
   )
 
@@ -67,7 +67,7 @@ class HomeController @Inject()(placeService: PlacesRepository,
   def edit(id: Long) = Action.async { implicit request =>
     placeService.findById(id).flatMap {
       case Some(place) =>
-        companyService.options.map { options =>
+        placeInfoService.options.map { options =>
           Ok(html.editForm(id, placeForm.fill(place), options))
         }
       case other =>
@@ -84,7 +84,7 @@ class HomeController @Inject()(placeService: PlacesRepository,
     placeForm.bindFromRequest.fold(
       formWithErrors => {
         logger.warn(s"form error: $formWithErrors")
-        companyService.options.map { options =>
+        placeInfoService.options.map { options =>
           BadRequest(html.editForm(id, formWithErrors, options))
         }
       },
@@ -100,7 +100,7 @@ class HomeController @Inject()(placeService: PlacesRepository,
     * Display the 'new computer form'.
     */
   def create = Action.async { implicit request =>
-    companyService.options.map { options =>
+    placeInfoService.options.map { options =>
       Ok(html.createForm(placeForm, options))
     }
   }
@@ -110,7 +110,7 @@ class HomeController @Inject()(placeService: PlacesRepository,
     */
   def save = Action.async { implicit request =>
     placeForm.bindFromRequest.fold(
-      formWithErrors => companyService.options.map { options =>
+      formWithErrors => placeInfoService.options.map { options =>
         BadRequest(html.createForm(formWithErrors, options))
       },
       place => {

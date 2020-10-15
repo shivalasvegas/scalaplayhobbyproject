@@ -1,0 +1,7 @@
+[error] C:\Users\shiva\Documents\AA_PROJECTS\AA_scala\hobbyScalaProject\playscalaanorm\app\models\PlacesRepository.scala:79:115: not found: type Company
+[error]   def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%"): Future[Page[(Place, Option[Company])]] = Future {
+[error]                                                                                                                   ^
+[error] C:\Users\shiva\Documents\AA_PROJECTS\AA_scala\hobbyScalaProject\playscalaanorm\app\models\PlacesRepository.scala:33:67: not found: type CompanyRepository
+[error] class PlacesRepository @Inject()(dbapi: DBApi, companyRepository: CompanyRepository)(implicit ec: DatabaseExecutionContext) {
+[error]                                                                   ^
+[error] two errors found

@@ -13,7 +13,7 @@ case class Place(id: Option[Long] = None,
                     name: String,
                     introduced: Option[Date],
                     discontinued: Option[Date],
-                    companyId: Option[Long])
+                    placeInfoId: Option[Long])
 
 object Place {
   implicit def toParameters: ToParameterList[Place] =
@@ -30,7 +30,7 @@ case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
 
 
 @javax.inject.Singleton
-class PlacesRepository @Inject()(dbapi: DBApi, companyRepository: CompanyRepository)(implicit ec: DatabaseExecutionContext) {
+class PlacesRepository @Inject()(dbapi: DBApi, placeInfoRepository: PlaceInfoRepository)(implicit ec: DatabaseExecutionContext) {
 
   private val db = dbapi.database("default")
 
@@ -44,17 +44,17 @@ class PlacesRepository @Inject()(dbapi: DBApi, companyRepository: CompanyReposit
       get[String]("place.name") ~
       get[Option[Date]]("place.introduced") ~
       get[Option[Date]]("place.discontinued") ~
-      get[Option[Long]]("place.company_id") map {
-      case id ~ name ~ introduced ~ discontinued ~ companyId =>
-        Place(id, name, introduced, discontinued, companyId)
+      get[Option[Long]]("place.placeInfo_id") map {
+      case id ~ name ~ introduced ~ discontinued ~ placeInfoId =>
+        Place(id, name, introduced, discontinued, placeInfoId)
     }
   }
 
   /**
-   * Parse a (Place,Company) from a ResultSet
+   * Parse a (Place,PlaceInfo) from a ResultSet
    */
-  private val withCompany = simple ~ (companyRepository.simple.?) map {
-    case place ~ company => place -> company
+  private val withPlaceInfo = simple ~ (placeInfoRepository.simple.?) map {
+    case place ~ placeInfo => place -> placeInfo
   }
 
   // -- Queries
@@ -69,14 +69,14 @@ class PlacesRepository @Inject()(dbapi: DBApi, companyRepository: CompanyReposit
   }(ec)
 
   /**
-   * Return a page of (Place,Company).
+   * Return a page of (Place,PlaceInfo).
    *
    * @param page Page to display
    * @param pageSize Number of computers per page
    * @param orderBy Computer property used for sorting
    * @param filter Filter applied on the name column
    */
-  def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%"): Future[Page[(Place, Option[Company])]] = Future {
+  def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%"): Future[Page[(Place, Option[PlaceInfo])]] = Future {
 
     val offset = pageSize * page
 
@@ -84,15 +84,15 @@ class PlacesRepository @Inject()(dbapi: DBApi, companyRepository: CompanyReposit
 
       val places = SQL"""
         select * from place
-        left join company on place.company_id = company.id
+        left join placeInfo on place.placeInfo_id = placeInfo.id
         where place.name like ${filter}
         order by ${orderBy} nulls last
         limit ${pageSize} offset ${offset}
-      """.as(withCompany.*)
+      """.as(withPlaceInfo.*)
 
       val totalRows = SQL"""
         select count(*) from place
-        left join company on place.company_id = company.id
+        left join placeInfo on place.placeInfo_id = placeInfo.id
         where place.name like ${filter}
       """.as(scalar[Long].single)
 
@@ -110,7 +110,7 @@ class PlacesRepository @Inject()(dbapi: DBApi, companyRepository: CompanyReposit
     db.withConnection { implicit connection =>
       SQL("""
         update place set name = {name}, introduced = {introduced},
-          discontinued = {discontinued}, company_id = {companyId}
+          discontinued = {discontinued}, placeInfo_id = {placeInfoId}
         where id = {id}
       """).bind(place.copy(id = Some(id)/* ensure */)).executeUpdate()
       // case class binding using ToParameterList,
@@ -128,7 +128,7 @@ class PlacesRepository @Inject()(dbapi: DBApi, companyRepository: CompanyReposit
       SQL("""
         insert into place values (
           (select next value for place_seq),
-          {name}, {introduced}, {discontinued}, {companyId}
+          {name}, {introduced}, {discontinued}, {placeInfoId}
         )
       """).bind(place).executeInsert()
     }
