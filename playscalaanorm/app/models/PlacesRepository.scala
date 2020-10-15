@@ -9,15 +9,15 @@ import play.api.db.DBApi
 
 import scala.concurrent.Future
 
-case class Computer(id: Option[Long] = None,
+case class Place(id: Option[Long] = None,
                     name: String,
                     introduced: Option[Date],
                     discontinued: Option[Date],
                     companyId: Option[Long])
 
-object Computer {
-  implicit def toParameters: ToParameterList[Computer] =
-    Macro.toParameters[Computer]
+object Place {
+  implicit def toParameters: ToParameterList[Place] =
+    Macro.toParameters[Place]
 }
 
 /**
@@ -30,73 +30,73 @@ case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
 
 
 @javax.inject.Singleton
-class ComputerRepository @Inject()(dbapi: DBApi, companyRepository: CompanyRepository)(implicit ec: DatabaseExecutionContext) {
+class PlacesRepository @Inject()(dbapi: DBApi, companyRepository: CompanyRepository)(implicit ec: DatabaseExecutionContext) {
 
   private val db = dbapi.database("default")
 
   // -- Parsers
 
   /**
-   * Parse a Computer from a ResultSet
+   * Parse a Place from a ResultSet
    */
   private val simple = {
-    get[Option[Long]]("computer.id") ~
-      get[String]("computer.name") ~
-      get[Option[Date]]("computer.introduced") ~
-      get[Option[Date]]("computer.discontinued") ~
-      get[Option[Long]]("computer.company_id") map {
+    get[Option[Long]]("place.id") ~
+      get[String]("place.name") ~
+      get[Option[Date]]("place.introduced") ~
+      get[Option[Date]]("place.discontinued") ~
+      get[Option[Long]]("place.company_id") map {
       case id ~ name ~ introduced ~ discontinued ~ companyId =>
-        Computer(id, name, introduced, discontinued, companyId)
+        Place(id, name, introduced, discontinued, companyId)
     }
   }
 
   /**
-   * Parse a (Computer,Company) from a ResultSet
+   * Parse a (Place,Company) from a ResultSet
    */
   private val withCompany = simple ~ (companyRepository.simple.?) map {
-    case computer ~ company => computer -> company
+    case place ~ company => place -> company
   }
 
   // -- Queries
 
   /**
-   * Retrieve a computer from the id.
+   * Retrieve a place from the id.
    */
-  def findById(id: Long): Future[Option[Computer]] = Future {
+  def findById(id: Long): Future[Option[Place]] = Future {
     db.withConnection { implicit connection =>
-      SQL"select * from computer where id = $id".as(simple.singleOpt)
+      SQL"select * from place where id = $id".as(simple.singleOpt)
     }
   }(ec)
 
   /**
-   * Return a page of (Computer,Company).
+   * Return a page of (Place,Company).
    *
    * @param page Page to display
    * @param pageSize Number of computers per page
    * @param orderBy Computer property used for sorting
    * @param filter Filter applied on the name column
    */
-  def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%"): Future[Page[(Computer, Option[Company])]] = Future {
+  def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%"): Future[Page[(Place, Option[Company])]] = Future {
 
     val offset = pageSize * page
 
     db.withConnection { implicit connection =>
 
-      val computers = SQL"""
-        select * from computer
-        left join company on computer.company_id = company.id
-        where computer.name like ${filter}
+      val places = SQL"""
+        select * from place
+        left join company on place.company_id = company.id
+        where place.name like ${filter}
         order by ${orderBy} nulls last
         limit ${pageSize} offset ${offset}
       """.as(withCompany.*)
 
       val totalRows = SQL"""
-        select count(*) from computer
-        left join company on computer.company_id = company.id
-        where computer.name like ${filter}
+        select count(*) from place
+        left join company on place.company_id = company.id
+        where place.name like ${filter}
       """.as(scalar[Long].single)
 
-      Page(computers, page, offset, totalRows)
+      Page(places, page, offset, totalRows)
     }
   }(ec)
 
@@ -104,15 +104,15 @@ class ComputerRepository @Inject()(dbapi: DBApi, companyRepository: CompanyRepos
    * Update a computer.
    *
    * @param id The computer id
-   * @param computer The computer values.
+   * @param place The computer values.
    */
-  def update(id: Long, computer: Computer) = Future {
+  def update(id: Long, place: Place) = Future {
     db.withConnection { implicit connection =>
       SQL("""
-        update computer set name = {name}, introduced = {introduced}, 
+        update place set name = {name}, introduced = {introduced},
           discontinued = {discontinued}, company_id = {companyId}
         where id = {id}
-      """).bind(computer.copy(id = Some(id)/* ensure */)).executeUpdate()
+      """).bind(place.copy(id = Some(id)/* ensure */)).executeUpdate()
       // case class binding using ToParameterList,
       // note using SQL(..) but not SQL.. interpolation
     }
@@ -121,27 +121,27 @@ class ComputerRepository @Inject()(dbapi: DBApi, companyRepository: CompanyRepos
   /**
    * Insert a new computer.
    *
-   * @param computer The computer values.
+   * @param place The computer values.
    */
-  def insert(computer: Computer): Future[Option[Long]] = Future {
+  def insert(place: Place): Future[Option[Long]] = Future {
     db.withConnection { implicit connection =>
       SQL("""
-        insert into computer values (
-          (select next value for computer_seq),
+        insert into place values (
+          (select next value for place_seq),
           {name}, {introduced}, {discontinued}, {companyId}
         )
-      """).bind(computer).executeInsert()
+      """).bind(place).executeInsert()
     }
   }(ec)
 
   /**
-   * Delete a computer.
+   * Delete a place.
    *
-   * @param id Id of the computer to delete.
+   * @param id Id of the place to delete.
    */
   def delete(id: Long) = Future {
     db.withConnection { implicit connection =>
-      SQL"delete from computer where id = ${id}".executeUpdate()
+      SQL"delete from place where id = ${id}".executeUpdate()
     }
   }(ec)
 
