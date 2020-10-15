@@ -13,7 +13,8 @@
         <entry key="root">
           <value>
             <ProjectSettingsEntry>
-              <option name="confDir" value="C:\Users\shiva\Documents\AA_PROJECTS\AA_scala\playExamples\play-samples\play-scala-anorm-example\app" />
+              <option name="sourceDir" value="C:\Users\shiva\Documents\AA_PROJECTS\AA_scala\playExamples\play-samples\play-scala-anorm-example\app" />
+              <option name="confDir" value="C:\Users\shiva\Documents\AA_PROJECTS\AA_scala\hobbyScalaProject\playscalaanorm\app" />
               <option name="templateImports">
                 <list>
                   <option value="_root_.play.twirl.api.TwirlFeatureImports._" />
@@ -36,7 +37,7 @@
                   <option value="controllers.Assets.Asset" />
                 </list>
               </option>
-              <option name="uri" value="/C:/Users/shiva/Documents/AA_PROJECTS/AA_scala/playExamples/play-samples/play-scala-anorm-example" />
+              <option name="uri" value="/C:/Users/shiva/Documents/AA_PROJECTS/AA_scala/hobbyScalaProject/playscalaanorm" />
             </ProjectSettingsEntry>
           </value>
         </entry>

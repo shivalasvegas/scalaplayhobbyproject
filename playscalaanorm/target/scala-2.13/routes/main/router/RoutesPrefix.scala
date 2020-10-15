@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:C:/Users/shiva/Documents/AA_PROJECTS/AA_scala/hobbyScalaProject/playscalaanorm/conf/routes
-// @DATE:Tue Oct 13 15:04:38 BST 2020
+// @DATE:Tue Oct 13 17:15:50 BST 2020
 
 
 package router {

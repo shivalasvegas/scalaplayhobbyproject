@@ -1,18 +1,18 @@
-2020-10-10 11:35:13,668 [INFO] from play.api.db.DefaultDBApi in play-dev-mode-akka.actor.default-dispatcher-4 - Database [default] initialized
-2020-10-10 11:35:13,676 [INFO] from play.api.db.HikariCPConnectionPool in play-dev-mode-akka.actor.default-dispatcher-4 - Creating Pool for datasource 'default'
-2020-10-10 11:35:13,694 [INFO] from com.zaxxer.hikari.HikariDataSource in play-dev-mode-akka.actor.default-dispatcher-4 - HikariPool-1 - Starting...
-2020-10-10 11:35:13,720 [INFO] from com.zaxxer.hikari.HikariDataSource in play-dev-mode-akka.actor.default-dispatcher-4 - HikariPool-1 - Start completed.
-2020-10-10 11:35:14,220 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-6 - Slf4jLogger started
-2020-10-10 11:35:14,332 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-4 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+2020-10-15 11:59:21,783 [INFO] from play.api.db.DefaultDBApi in play-dev-mode-akka.actor.default-dispatcher-5 - Database [default] initialized
+2020-10-15 11:59:21,806 [INFO] from play.api.db.HikariCPConnectionPool in play-dev-mode-akka.actor.default-dispatcher-5 - Creating Pool for datasource 'default'
+2020-10-15 11:59:21,852 [INFO] from com.zaxxer.hikari.HikariDataSource in play-dev-mode-akka.actor.default-dispatcher-5 - HikariPool-1 - Starting...
+2020-10-15 11:59:21,914 [INFO] from com.zaxxer.hikari.HikariDataSource in play-dev-mode-akka.actor.default-dispatcher-5 - HikariPool-1 - Start completed.
+2020-10-15 11:59:22,993 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-8 - Slf4jLogger started
+2020-10-15 11:59:23,112 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-5 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
 
     play.filters.csrf.CSRFFilter
     play.filters.headers.SecurityHeadersFilter
     play.filters.hosts.AllowedHostsFilter
 
-2020-10-10 11:35:14,396 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-4 - Application started (Dev) (no global state)
-2020-10-10 11:35:14,500 [ERROR] from play.api.http.DefaultHttpErrorHandler in play-dev-mode-akka.actor.default-dispatcher-4 - 
+2020-10-15 11:59:23,294 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-5 - Application started (Dev) (no global state)
+2020-10-15 11:59:23,570 [ERROR] from play.api.http.DefaultHttpErrorHandler in play-dev-mode-akka.actor.default-dispatcher-5 - 
 
-! @7hco8552e - Internal server error, for (GET) [/] ->
+! @7he8kifo8 - Internal server error, for (GET) [/] ->
  
 play.api.db.evolutions.InvalidDatabaseRevision: Database 'default' needs evolution![An SQL script need to be run on your database.]
 	at play.api.db.evolutions.EvolutionsWebCommands.$anonfun$handleWebCommand$5(ApplicationEvolutions.scala:519)
@@ -53,18 +53,18 @@ play.api.db.evolutions.InvalidDatabaseRevision: Database 'default' needs evoluti
 	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
 	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
 	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:172)
-2020-10-10 11:35:25,951 [INFO] from play.api.db.HikariCPConnectionPool in application-akka.actor.internal-dispatcher-3 - Shutting down connection pool.
-2020-10-10 11:35:25,953 [INFO] from com.zaxxer.hikari.HikariDataSource in application-akka.actor.internal-dispatcher-3 - HikariPool-1 - Shutdown initiated...
-2020-10-10 11:35:25,965 [INFO] from com.zaxxer.hikari.HikariDataSource in application-akka.actor.internal-dispatcher-3 - HikariPool-1 - Shutdown completed.
-2020-10-10 11:35:26,204 [INFO] from play.api.db.DefaultDBApi in play-dev-mode-akka.actor.default-dispatcher-6 - Database [default] initialized
-2020-10-10 11:35:26,205 [INFO] from play.api.db.HikariCPConnectionPool in play-dev-mode-akka.actor.default-dispatcher-6 - Creating Pool for datasource 'default'
-2020-10-10 11:35:26,205 [INFO] from com.zaxxer.hikari.HikariDataSource in play-dev-mode-akka.actor.default-dispatcher-6 - HikariPool-2 - Starting...
-2020-10-10 11:35:26,206 [INFO] from com.zaxxer.hikari.HikariDataSource in play-dev-mode-akka.actor.default-dispatcher-6 - HikariPool-2 - Start completed.
-2020-10-10 11:35:26,254 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-8 - Slf4jLogger started
-2020-10-10 11:35:26,300 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-6 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+2020-10-15 11:59:29,402 [INFO] from play.api.db.HikariCPConnectionPool in application-akka.actor.internal-dispatcher-2 - Shutting down connection pool.
+2020-10-15 11:59:29,407 [INFO] from com.zaxxer.hikari.HikariDataSource in application-akka.actor.internal-dispatcher-2 - HikariPool-1 - Shutdown initiated...
+2020-10-15 11:59:29,439 [INFO] from com.zaxxer.hikari.HikariDataSource in application-akka.actor.internal-dispatcher-2 - HikariPool-1 - Shutdown completed.
+2020-10-15 11:59:30,260 [INFO] from play.api.db.DefaultDBApi in play-dev-mode-akka.actor.default-dispatcher-7 - Database [default] initialized
+2020-10-15 11:59:30,262 [INFO] from play.api.db.HikariCPConnectionPool in play-dev-mode-akka.actor.default-dispatcher-7 - Creating Pool for datasource 'default'
+2020-10-15 11:59:30,264 [INFO] from com.zaxxer.hikari.HikariDataSource in play-dev-mode-akka.actor.default-dispatcher-7 - HikariPool-2 - Starting...
+2020-10-15 11:59:30,265 [INFO] from com.zaxxer.hikari.HikariDataSource in play-dev-mode-akka.actor.default-dispatcher-7 - HikariPool-2 - Start completed.
+2020-10-15 11:59:30,443 [INFO] from akka.event.slf4j.Slf4jLogger in application-akka.actor.default-dispatcher-7 - Slf4jLogger started
+2020-10-15 11:59:30,631 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-7 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
 
     play.filters.csrf.CSRFFilter
     play.filters.headers.SecurityHeadersFilter
     play.filters.hosts.AllowedHostsFilter
 
-2020-10-10 11:35:26,318 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-6 - Application started (Dev) (no global state)
+2020-10-15 11:59:30,659 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-7 - Application started (Dev) (no global state)

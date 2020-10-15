@@ -28,7 +28,7 @@ Seq[Any](format.raw/*1.58*/("""
 """),format.raw/*3.1*/("""<!DOCTYPE html>
 <html>
     <head>
-        <title>Computers database</title>
+        <title>Places database</title>
         
         """),format.raw/*14.47*/("""
         """),format.raw/*15.9*/("""<link rel="stylesheet" type="text/css" media="screen" href=""""),_display_(/*15.70*/routes/*15.76*/.Assets.at("stylesheets/bootstrap.min.css")),format.raw/*15.119*/("""">
@@ -69,10 +69,10 @@ Seq[Any](format.raw/*1.58*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2020-10-10T11:34:42.472
-                  SOURCE: C:/Users/shiva/Documents/AA_PROJECTS/AA_scala/playExamples/play-samples/play-scala-anorm-example/app/views/main.scala.html
-                  HASH: 6424bfbaed2c8d02e9ebb43a191b73e9ceeb8b42
-                  MATRIX: 748->1|899->57|929->61|1055->664|1092->674|1180->735|1195->741|1260->784|1354->851|1369->857|1424->891|1620->1060|1635->1066|1679->1089|1893->1276|1921->1283|1958->1293
+                  DATE: 2020-10-13T17:15:51.236
+                  SOURCE: C:/Users/shiva/Documents/AA_PROJECTS/AA_scala/hobbyScalaProject/playscalaanorm/app/views/main.scala.html
+                  HASH: 6f378cdc135fd23e5e73a89ed4575ad482412c16
+                  MATRIX: 748->1|899->57|929->61|1052->661|1089->671|1177->732|1192->738|1257->781|1351->848|1366->854|1421->888|1617->1057|1632->1063|1676->1086|1890->1273|1918->1280|1955->1290
                   LINES: 21->1|26->1|28->3|33->14|34->15|34->15|34->15|34->15|36->17|36->17|36->17|44->25|44->25|44->25|51->32|51->32|52->33
                   -- GENERATED --
               */
